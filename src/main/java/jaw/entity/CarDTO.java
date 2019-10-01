@@ -1,17 +1,42 @@
-package jaw;
+package jaw.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Column;
+
+@Entity
+@Table(name = "cars")
 public class CarDTO {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	@Column
 	private String make;
+	@Column
 	private String model;
+	@Column(name="modelyear")
 	private Integer modelYear;
+	
+	public CarDTO() { }
 
 	public CarDTO(String make, String model, Integer modelYear) {
 		this.make = make;
 		this.model = model;
 		this.modelYear = modelYear;
 	}
-
+	
+	public Long getId() {
+        return id;
+    }
+	
+	public void setId(Long id) {
+		this.id = id;
+    }
+	
 	public String getMake() {
 		return make;
 	}
@@ -35,5 +60,4 @@ public class CarDTO {
 	public void setModelYear(Integer modelYear) {
 		this.modelYear = modelYear;
 	}
-
 }
