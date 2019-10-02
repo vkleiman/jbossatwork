@@ -6,7 +6,7 @@
     </head>
 
     <body>
-        <h1>JAW Motors -- Error22</h1>
+        <h1>JAW Motors -- Error</h1>
 
         <p>Status: ${status}</p>
         <p>Error: ${error}</p>
