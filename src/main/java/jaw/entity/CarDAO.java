@@ -12,5 +12,7 @@ public interface CarDAO {
 	
 	public void update(CarDTO car);
 	
-	public void delete(List<Long> ids);
+	public void delete(Long id);
+	
+	public List<CarDTO> findByStatus(String status);
 }

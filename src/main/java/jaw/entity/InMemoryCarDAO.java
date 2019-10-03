@@ -21,10 +21,11 @@ public class InMemoryCarDAO implements CarDAO
     
     public void save(CarDTO car) { }
     
-    public CarDTO findById(Long id) {return null; }
+    public CarDTO findById(Long id) { return null; }
     
     public void update(CarDTO car) { }
     
-	public void delete(List<Long> ids) { }
-
+	public void delete(Long id) { }
+	
+	public List<CarDTO> findByStatus(String status) { return null; }
 }

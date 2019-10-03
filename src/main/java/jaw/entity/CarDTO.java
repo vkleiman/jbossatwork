@@ -11,6 +11,9 @@ import javax.persistence.Column;
 @Table(name = "cars")
 public class CarDTO {
 
+	public static final String STATUS_AVAILABLE = "Available";
+	public static final String STATUS_SOLD = "SOLD";
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -20,13 +23,18 @@ public class CarDTO {
 	private String model;
 	@Column(name="modelyear")
 	private Integer modelYear;
+	@Column(name="status")
+	private String status;
 	
-	public CarDTO() { }
+	public CarDTO() { 
+		this.status = CarDTO.STATUS_AVAILABLE;
+	}
 
 	public CarDTO(String make, String model, Integer modelYear) {
 		this.make = make;
 		this.model = model;
 		this.modelYear = modelYear;
+		this.status = CarDTO.STATUS_AVAILABLE;
 	}
 	
 	public Long getId() {
@@ -59,5 +67,13 @@ public class CarDTO {
 
 	public void setModelYear(Integer modelYear) {
 		this.modelYear = modelYear;
+	}
+	
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 }

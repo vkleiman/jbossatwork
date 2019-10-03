@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.UnexpectedRollbackException;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -13,63 +14,70 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.HandlerMapping;
 
-import jaw.entity.CarDAO;
 import jaw.entity.CarDTO;
 
 @Controller
 public class JawController {
 	
 	@Autowired
-	CarDAO carDAO;
+	InventoryService inventory;
 	
 	@GetMapping({"/", "/index"})
 	public String index(Model model) {
-		System.out.println("in /index");
 		return "index";
 	}
 	
 	@GetMapping({"/carList"})
 	public String carList(Model model) {
-		model.addAttribute("carList", carDAO.findAll());
-	    	return "carList";
+		model.addAttribute("carList", inventory.listAvailableCars());
+	    return "carList";
 	}
 	
 	@GetMapping({"/carForm"})
 	public String editForm(@RequestParam Long id, Model model) {
-
-		CarDTO car;
-		if(id==0)
-			car = new  CarDTO();
-		else
-			car = carDAO.findById(id);
+		
+		CarDTO car = inventory.findCar(id);
 		model.addAttribute("car", car);
-	    	return "carForm";
+	    return "carForm";
 	}
 	
 	@PostMapping("/carForm")
     public String submitForm(@ModelAttribute CarDTO carDto, Model model) {
 		
-		Long id = carDto.getId();
-		if(id==null || id==0)
-			carDAO.save(carDto);
-		else //update
-			carDAO.update(carDto);
-		model.addAttribute("carList", carDAO.findAll());
+		inventory.saveCar(carDto);
+		model.addAttribute("carList", inventory.listAvailableCars());
 		return "carList";
     }
-
-	@PostMapping("/deleteCar")
-	public String submitForm(@RequestParam(name="id", required=false) List<Long> idValues, Model model) {
-	    
-		if (idValues!=null) {            
-	    		carDAO.delete(idValues);
+	
+	@GetMapping({"/buyForm"})
+	public String buyForm(@RequestParam Long id, Model model) {		
+		CarDTO car = inventory.findCar(id);
+		model.addAttribute("car", car);
+	    return "buyCarForm";
+	}
+	
+	@PostMapping("/buyForm")
+    public String buyForm(@RequestParam Long id, @RequestParam Integer price, Model model) {
+	
+		try {
+			inventory.buyCar(id, price);
+			return "redirect:carList";
+		} catch (UnexpectedRollbackException e) {
+			System.out.println("buyForm Exception" + e);
+			model.addAttribute("message", e.getMessage());
+			return "error";
 		}
-		model.addAttribute("carList", carDAO.findAll());
+    }
+	
+	@PostMapping("/carDelete")
+	public String submitForm(@RequestParam(name="id", required=false) List<Long> idValues, Model model) {
+	              
+	    inventory.deleteCars(idValues);
 		return "redirect:carList";
 	}
 	
 	@GetMapping("/error")
-	public String foo(HttpServletRequest request, Model model) {
+	public String error(HttpServletRequest request, Model model) {
 	    String action = (String) request.getAttribute(
 	        HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
 	    System.out.println("action = " + action);
@@ -78,4 +86,3 @@ public class JawController {
 		return "error";
 	}
 }
-

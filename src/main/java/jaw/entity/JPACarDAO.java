@@ -27,11 +27,8 @@ public class JPACarDAO implements CarDAO
     		repository.save(car);
     }
     
-    public void delete(List<Long> ids) {
-    	
-    		for(int i=0; i<ids.size(); i++) {
-        		repository.deleteById(ids.get(i));
-    		}    		
+    public void delete(Long id) {
+        	repository.deleteById(id);
     }
     
     @Transactional
@@ -43,5 +40,9 @@ public class JPACarDAO implements CarDAO
     public CarDTO findById(Long id) {
 		Optional<CarDTO> car = repository.findById(id);
 		return car.get();
+    }
+    
+    public List<CarDTO> findByStatus(String status) {
+		return repository.findByStatus(status);
     }
 }

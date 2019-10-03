@@ -44,5 +44,18 @@ public class JDBCCarDAO implements CarDAO
 		return car;
     }
     
-	public void delete(List<Long> ids) { }
+	public void delete(Long id) { }
+	
+    public List<CarDTO> findByStatus(String status)
+    {
+        return jdbcTemplate.query(
+                "select * from cars where status = ?", new Object[]{status},
+                (rs, rowNum) ->
+                        new CarDTO(
+                                rs.getString("make"),
+                                rs.getString("model"),
+                                rs.getInt("modelYear")
+                        )
+        );
+    }
 }

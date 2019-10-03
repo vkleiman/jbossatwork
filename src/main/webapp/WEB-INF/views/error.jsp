@@ -12,7 +12,7 @@
         <p>Error: ${error}</p>
         <p>Message: ${message}</p>
         <p>Path: ${path}</p>
-        <p><a href="index.jsp">Back to main page</a></p>
+        <p><a href="index">Back to main page</a></p>
     </body>
 
 </html>

@@ -20,7 +20,7 @@
 
   <p><a href="carForm?id=0">[Add Car]</a></p>
 
-  <form name="deleteForm" method="post" action="deleteCar">
+  <form name="deleteForm" method="post" action="carDelete">
   <input type="hidden" name="action" value="deleteCar" />
   <table>
     <tr>
@@ -29,20 +29,22 @@
       <th>Make</th>
       <th>Model</th>
       <th class="model-year">Model Year</th>
+      <th>Buy Car</th>
     </tr>
     
     <c:forEach items='${carList}' var='car'>
       <tr>
       <td><input type="checkbox" name="id" value="${car.id}"></td>
-      <td><a href="carForm?id=${car.id}">Edit</td>
+      <td><a href="carForm?id=${car.id}">Edit</a></td>
       <td>${car.make}</td>
       <td>${car.model}</td>
       <td class="model-year">${car.modelYear}</td>
+      <td><a href="buyForm?id=${car.id}">Buy</a></td>
       </tr>
     </c:forEach>
     
     <tr>
-      <td colspan="5">
+      <td colspan="6">
         <input type="submit" name="Delete Checked" value="Delete Checked" />
         &nbsp;&nbsp;
         <input type="reset" name="Reset" value="Reset" />
