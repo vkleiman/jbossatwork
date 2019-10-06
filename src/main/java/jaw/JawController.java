@@ -15,12 +15,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.HandlerMapping;
 
 import jaw.entity.CarDTO;
+import jaw.entity.CreditCheckRequest;
+import jaw.services.InventoryService;
+import jaw.services.JmsProducer;
 
 @Controller
 public class JawController {
 	
 	@Autowired
 	InventoryService inventory;
+	
+	@Autowired
+	JmsProducer msgSender;
 	
 	@GetMapping({"/", "/index"})
 	public String index(Model model) {
@@ -74,6 +80,23 @@ public class JawController {
 	              
 	    inventory.deleteCars(idValues);
 		return "redirect:carList";
+	}
+	
+	@GetMapping({"/creditCheck"})
+	public String creditCheckForm(Model model) {		
+	    	return "creditCheckForm";
+	}
+	
+	@PostMapping("/runCreditCheck")
+	public String runCreditCheck(@RequestParam String name, @RequestParam String ssn,
+			@RequestParam String email, Model model) {
+	    
+		//System.out.println("Name = " + name);
+	    //System.out.println("SSN = " + ssn);
+	    //System.out.println("Email = " + email);
+
+	    msgSender.sendMessage(new CreditCheckRequest(name, ssn, email));
+		return "redirect:index";
 	}
 	
 	@GetMapping("/error")

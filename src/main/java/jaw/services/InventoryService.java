@@ -1,4 +1,4 @@
-package jaw;
+package jaw.services;
 
 import java.util.List;
 
@@ -26,15 +26,15 @@ public class InventoryService {
 	@Autowired
 	PlatformTransactionManager ptm;
 	
-	List<CarDTO> listAvailableCars() {		
+	public List<CarDTO> listAvailableCars() {		
 		return carDAO.findByStatus(CarDTO.STATUS_AVAILABLE);
 	}
 	
-	List<CarDTO> findAll() {		
+	public List<CarDTO> findAll() {		
 		return carDAO.findAll();
 	}
 	
-	CarDTO findCar(Long id) {
+	public CarDTO findCar(Long id) {
 		
 		CarDTO car;
 		if(id==0)
@@ -44,7 +44,7 @@ public class InventoryService {
 		return car;
 	}
 	
-	void saveCar(CarDTO carDto) {
+	public void saveCar(CarDTO carDto) {
 		Long id = carDto.getId();
 		if(id==null || id==0) {
 			carDto.setStatus(CarDTO.STATUS_AVAILABLE);
@@ -54,7 +54,7 @@ public class InventoryService {
 			carDAO.update(carDto);
 	}
 	
-	void deleteCars(List<Long> ids) {
+	public void deleteCars(List<Long> ids) {
 		if(ids==null)
 			return;
 		for(Long id: ids)
