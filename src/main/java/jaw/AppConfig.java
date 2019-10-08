@@ -12,6 +12,10 @@ import org.springframework.jms.config.JmsListenerContainerFactory;
 import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
 import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.jms.support.converter.MessageType;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+
+import java.util.Properties;
+
 import javax.jms.ConnectionFactory;
 
 import jaw.entity.CarDAO;
@@ -55,5 +59,19 @@ public class AppConfig {
         converter.setTargetType(MessageType.TEXT);
         converter.setTypeIdPropertyName("_type");
         return converter;
+    }
+    
+    //https://javaee.github.io/javamail/docs/api/com/sun/mail/smtp/package-summary.html
+    @Bean
+    public JavaMailSenderImpl javaMailSender() {
+    	JavaMailSenderImpl sender = new JavaMailSenderImpl();
+        sender.setHost("smtp.mail.yahoo.com");
+        sender.setPort(465);
+        sender.setUsername("USERNAME");
+        sender.setPassword("PASSWORD");
+        Properties props = new Properties();
+        props.put("mail.smtp.ssl.enable", true);
+        sender.setJavaMailProperties(props);
+        return sender;
     }
 }

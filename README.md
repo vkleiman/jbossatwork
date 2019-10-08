@@ -31,3 +31,9 @@ error message
 
 Ch 7 - Spring JMS\
 to run locally checkout ch7 branch
+
+Ch 8 - Email\
+to run locally checkout ch8 branch
+You can use SendGrid API as described in\
+https://github.com/GoogleCloudPlatform/java-docs-samples/tree/master/compute/sendgrid or
+Spring Mail which you can setup in AppConfig.java
